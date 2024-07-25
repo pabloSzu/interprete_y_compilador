@@ -1,0 +1,20 @@
+program miprograma {
+
+	var x;
+	
+	x = 5;
+	
+	println 6;
+	
+	println x;
+
+	var y;
+	
+	y = x;
+	
+	println 2+3+9;
+	
+	println (2+(4/4))/3+10;
+	
+	
+}
