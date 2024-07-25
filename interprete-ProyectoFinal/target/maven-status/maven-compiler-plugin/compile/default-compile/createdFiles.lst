@@ -1,0 +1,13 @@
+com\simple\interprete\Main.class
+com\simple\interprete\SimpleVisitor.class
+com\simple\interprete\SimpleParser$SentenceContext.class
+com\simple\interprete\SimpleBaseListener.class
+com\simple\interprete\SimpleParser$Var_declContext.class
+com\simple\interprete\SimpleParser.class
+com\simple\interprete\SimpleCustomVisitor.class
+com\simple\interprete\SimpleParser$Var_assignContext.class
+com\simple\interprete\SimpleListener.class
+com\simple\interprete\SimpleParser$PrintlnContext.class
+com\simple\interprete\SimpleParser$ProgramContext.class
+com\simple\interprete\SimpleBaseVisitor.class
+com\simple\interprete\SimpleLexer.class
