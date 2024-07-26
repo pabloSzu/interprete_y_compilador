@@ -1,0 +1,6 @@
+Context 1:
+  w: Symbol{name='w', type='int', initialized=false, used=true}
+  x: Symbol{name='x', type='int', initialized=false, used=true}
+  y: Symbol{name='y', type='int', initialized=false, used=true}
+  z: Symbol{name='z', type='int', initialized=false, used=true}
+

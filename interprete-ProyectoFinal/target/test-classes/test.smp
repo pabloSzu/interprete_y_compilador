@@ -1,10 +1,22 @@
-program miprograma {
+int x;
+int y;
+int z;
+int w;
 
-	
-	
-	if (true){
-		println 1;
-	} else {
-		println 2;
-	}
+x = 5;
+y = x + 10;
+z = y * 2;
+w = z - 1;
+
+if (x > y) {
+    z = z + 1;
+} else {
+    w = w + 1;
 }
+
+while (w < 10) {
+    w = w + 1;
+}
+
+functionCall(x, y);
+
