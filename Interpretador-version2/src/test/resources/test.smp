@@ -1,0 +1,33 @@
+
+int main() {
+    
+    int a = 10;
+    int b = 20;
+    double c = 15.5;
+    char d = 'x';
+    
+    
+    a = a + b;
+    
+    if (a > b) {
+        print(a);
+    } else {
+        print(b);
+    }
+    
+
+    while (a < 30) {
+        a = a + 1;
+    }
+    
+
+    int suma(int x, int y) {
+        return x + y;
+    }
+    
+
+    int resultado = suma(a, b);
+    
+
+    return resultado;
+}
