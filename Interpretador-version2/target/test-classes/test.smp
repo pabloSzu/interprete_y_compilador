@@ -1,4 +1,4 @@
-int t;
+int varGlobal_1 = 100;
 
 int main() {
     
@@ -7,7 +7,8 @@ int main() {
     double c = 15.5;
     char d = 'x';
     
-    
+    e = a + b;  
+
     a = a + b;
     
     if (a > b) {
@@ -16,19 +17,26 @@ int main() {
         print(b);
     }
     
-
+    d = 100;
+    
     while (a < 30) {
         a = a + 1;
     }
     
-
     int suma(int x, int y) {
         return x + y;
     }
     
-
     int resultado = suma(a, b);
-    
 
+    int res = resta(a, b); 
+    
+    int z;
+    z = z + 1;
+    
     return resultado;
+}
+
+int resta(int x, int y) {
+    return x - y;
 }

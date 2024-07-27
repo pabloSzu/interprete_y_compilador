@@ -9,7 +9,7 @@ import proyectoFinal.Interpretador.TablaSimbolos.Symbol;
 public class SimpleCustomVisitor extends SimpleBaseVisitor<String> {
 
     private SymbolTable symbolTable = new SymbolTable();
-    private List<String> errors = new ArrayList<>();
+    private CustomErrors customErrors = new CustomErrors();
     private Stack<Boolean> contextStack = new Stack<>();
     private List<String> threeAddressCode = new ArrayList<>();
     private int tempVarCounter = 0;
@@ -36,14 +36,14 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<String> {
         } else {
             symbolTable.addGlobalSymbol(varName, symbol);
         }
-    
+
         System.out.println("Added symbol: " + varName + " of type " + varType);
-    
+
         if (ctx.operacion() != null) {
             String value = visit(ctx.operacion());
             threeAddressCode.add(varName + " = " + value);
         }
-    
+
         return null;
     }
 
@@ -51,7 +51,7 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<String> {
     public String visitAsignacion(SimpleParser.AsignacionContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.contains(varName)) {
-            errors.add("Error: linea: " + ctx.start.getLine() + "; '" + varName + "' no ha sido declarado (Error semantico)");
+            customErrors.idNoDeclarado(Integer.toString(ctx.start.getLine()), varName);
         }
         String value = visit(ctx.operacion());
         threeAddressCode.add(varName + " = " + value);
@@ -234,15 +234,15 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<String> {
         // Code generation logic (if needed)
     }
 
-    public List<String> getErrors() {
-        return errors;
-    }
-
     public List<String> getThreeAddressCode() {
         return threeAddressCode;
     }
 
     public SymbolTable getSymbolTable() {
         return symbolTable;
+    }
+
+    public CustomErrors getCustomErrors() {
+        return customErrors;
     }
 }

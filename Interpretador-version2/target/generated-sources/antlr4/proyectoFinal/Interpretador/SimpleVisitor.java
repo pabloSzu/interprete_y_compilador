@@ -150,4 +150,10 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBloque(SimpleParser.BloqueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleParser#printStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStmt(SimpleParser.PrintStmtContext ctx);
 }

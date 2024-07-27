@@ -1,7 +1,10 @@
 Global Symbols:
-t : Symbol{name='t', type='int'}
+varGlobal_1 : Symbol{name='varGlobal_1', type='int'}
 Local Symbols:
 a : Symbol{name='a', type='int'}
+res : Symbol{name='res', type='int'}
 b : Symbol{name='b', type='int'}
 c : Symbol{name='c', type='double'}
 d : Symbol{name='d', type='char'}
+resultado : Symbol{name='resultado', type='int'}
+z : Symbol{name='z', type='int'}

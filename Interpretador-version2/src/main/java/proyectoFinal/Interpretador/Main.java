@@ -1,5 +1,3 @@
-
-
 package proyectoFinal.Interpretador;
 
 import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
@@ -52,12 +50,11 @@ public class Main {
                 SymbolTable symbolTable = visitor.getSymbolTable();
                 String baseFileName = file.replace(".", "_");
 
-               // Crear archivo de tabla de símbolos
+                // Crear archivo de tabla de símbolos
                 String symbolTableFilePath = OUTPUT_DIR + "symbol_table_" + baseFileName + ".txt";
                 String symbolTableContent = symbolTable.toString();
                 System.out.println("Symbol Table Content:\n" + symbolTableContent);
                 writeToFile(symbolTableFilePath, symbolTableContent);
-
 
                 // Crear archivo de código de tres direcciones
                 String threeAddressCodeFilePath = OUTPUT_DIR + "three_address_code_" + baseFileName + ".txt";
@@ -67,14 +64,14 @@ public class Main {
                 String optimizedCodeFilePath = OUTPUT_DIR + "optimized_code_" + baseFileName + ".txt";
                 //writeToFile(optimizedCodeFilePath, String.join("\n", visitor.getOptimizedCode()));
 
-                if (visitor.getErrors().isEmpty()) {
+                if (visitor.getCustomErrors().isEmpty()) {
                     System.out.println("No errors found.");
                     System.out.println("Symbol table written to " + symbolTableFilePath);
                     System.out.println("Three address code written to " + threeAddressCodeFilePath);
                     System.out.println("Optimized code written to " + optimizedCodeFilePath);
                 } else {
                     System.err.println("Errors found:");
-                    for (String error : visitor.getErrors()) {
+                    for (String error : visitor.getCustomErrors().getAllErrors()) {
                         System.err.println(error);
                     }
                 }

@@ -91,6 +91,7 @@ instruccion
     | llamadaFuncion PYC
     | retorno PYC
     | bloque
+    | printStmt PYC
     ;
 
 retorno : RETURN operacion ;
@@ -164,4 +165,8 @@ factor
 
 bloque
     : LA instrucciones LC
+    ;
+
+printStmt
+    : PRINT PA operacion PC
     ;
