@@ -1,0 +1,9 @@
+Global Symbols:
+suma: Symbol{name='suma', type='int'}
+main: Symbol{name='main', type='int'}
+Local Symbols:
+a: Symbol{name='a', type='int'}
+b: Symbol{name='b', type='int'}
+c: Symbol{name='c', type='double'}
+d: Symbol{name='d', type='char'}
+resultado: Symbol{name='resultado', type='int'}
