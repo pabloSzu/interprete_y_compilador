@@ -1,12 +1,14 @@
+
+
 package proyectoFinal.Interpretador;
 
+import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-
-import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
 
 public class Main {
 
@@ -14,7 +16,7 @@ public class Main {
     private static final String DIRBASE = "src/test/resources/";
     private static final String OUTPUT_DIR = "src/test/output/";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // Verificar y crear el directorio de salida si no existe
         File outputDir = new File(OUTPUT_DIR);
         if (!outputDir.exists()) {
@@ -48,23 +50,28 @@ public class Main {
                 visitor.visit(tree);
 
                 SymbolTable symbolTable = visitor.getSymbolTable();
-                String outputFilePath = OUTPUT_DIR + "symbol_table_" + file.replace(".", "_") + ".txt";
+                String baseFileName = file.replace(".", "_");
 
-                // Verificar y crear el archivo de salida si no existe
-                File outputFile = new File(outputFilePath);
-                if (!outputFile.exists()) {
-                    if (outputFile.createNewFile()) {
-                        System.out.println("File created: " + outputFilePath);
-                    } else {
-                        System.err.println("Failed to create file: " + outputFilePath);
-                        continue; // Salta al siguiente archivo si no se puede crear el archivo
-                    }
-                }
+               // Crear archivo de tabla de símbolos
+                String symbolTableFilePath = OUTPUT_DIR + "symbol_table_" + baseFileName + ".txt";
+                String symbolTableContent = symbolTable.toString();
+                System.out.println("Symbol Table Content:\n" + symbolTableContent);
+                writeToFile(symbolTableFilePath, symbolTableContent);
+
+
+                // Crear archivo de código de tres direcciones
+                String threeAddressCodeFilePath = OUTPUT_DIR + "three_address_code_" + baseFileName + ".txt";
+                writeToFile(threeAddressCodeFilePath, String.join("\n", visitor.getThreeAddressCode()));
+
+                // Crear archivo de código optimizado
+                String optimizedCodeFilePath = OUTPUT_DIR + "optimized_code_" + baseFileName + ".txt";
+                //writeToFile(optimizedCodeFilePath, String.join("\n", visitor.getOptimizedCode()));
 
                 if (visitor.getErrors().isEmpty()) {
                     System.out.println("No errors found.");
-                    symbolTable.writeToFile(outputFilePath);
-                    System.out.println("Symbol table written to " + outputFilePath);
+                    System.out.println("Symbol table written to " + symbolTableFilePath);
+                    System.out.println("Three address code written to " + threeAddressCodeFilePath);
+                    System.out.println("Optimized code written to " + optimizedCodeFilePath);
                 } else {
                     System.err.println("Errors found:");
                     for (String error : visitor.getErrors()) {
@@ -81,6 +88,12 @@ public class Main {
             }
 
             System.out.println("FINISH: " + file);
+        }
+    }
+
+    private static void writeToFile(String filePath, String content) throws IOException {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write(content);
         }
     }
 }

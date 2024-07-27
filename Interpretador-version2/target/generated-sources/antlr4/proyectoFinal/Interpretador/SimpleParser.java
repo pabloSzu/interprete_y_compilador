@@ -28,8 +28,8 @@ public class SimpleParser extends Parser {
 		PA=1, PC=2, CA=3, CC=4, LA=5, LC=6, PYC=7, COMA=8, IGUAL=9, MAYOR=10, 
 		MAYOR_IGUAL=11, MENOR=12, MENOR_IGUAL=13, EQL=14, DISTINTO=15, SUM=16, 
 		RES=17, MUL=18, DIV=19, MOD=20, OR=21, AND=22, NOT=23, WHILE=24, IF=25, 
-		ELSE=26, INT=27, CHAR=28, DOUBLE=29, VOID=30, RETURN=31, ID=32, INTEGER=33, 
-		DECIMAL=34, CHARACTER=35, WS=36, OTRO=37;
+		ELSE=26, INT=27, CHAR=28, DOUBLE=29, VOID=30, RETURN=31, PRINT=32, ID=33, 
+		INTEGER=34, DECIMAL=35, CHARACTER=36, WS=37, OTRO=38;
 	public static final int
 		RULE_prog = 0, RULE_instrucciones = 1, RULE_instruccion = 2, RULE_retorno = 3, 
 		RULE_declaracion = 4, RULE_asignacion = 5, RULE_tipoDato = 6, RULE_condif = 7, 
@@ -54,7 +54,7 @@ public class SimpleParser extends Parser {
 			null, "'('", "')'", "'['", "']'", "'{'", "'}'", "';'", "','", "'='", 
 			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'+'", "'-'", "'*'", "'/'", 
 			"'%'", "'||'", "'&&'", "'!'", "'while'", "'if'", "'else'", "'int'", "'char'", 
-			"'double'", "'void'", "'return'"
+			"'double'", "'void'", "'return'", "'print'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -63,8 +63,8 @@ public class SimpleParser extends Parser {
 			null, "PA", "PC", "CA", "CC", "LA", "LC", "PYC", "COMA", "IGUAL", "MAYOR", 
 			"MAYOR_IGUAL", "MENOR", "MENOR_IGUAL", "EQL", "DISTINTO", "SUM", "RES", 
 			"MUL", "DIV", "MOD", "OR", "AND", "NOT", "WHILE", "IF", "ELSE", "INT", 
-			"CHAR", "DOUBLE", "VOID", "RETURN", "ID", "INTEGER", "DECIMAL", "CHARACTER", 
-			"WS", "OTRO"
+			"CHAR", "DOUBLE", "VOID", "RETURN", "PRINT", "ID", "INTEGER", "DECIMAL", 
+			"CHARACTER", "WS", "OTRO"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1629,7 +1629,7 @@ public class SimpleParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\'\u00c4\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3(\u00c4\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\3\2\3\2\3\2\3\3\6\3"+
@@ -1656,16 +1656,16 @@ public class SimpleParser extends Parser {
 		"\32\16\2AB\7\t\2\2BH\3\2\2\2CD\5\b\5\2DE\7\t\2\2EH\3\2\2\2FH\5,\27\2G"+
 		"\66\3\2\2\2G9\3\2\2\2G<\3\2\2\2G=\3\2\2\2G>\3\2\2\2G?\3\2\2\2G@\3\2\2"+
 		"\2GC\3\2\2\2GF\3\2\2\2H\7\3\2\2\2IJ\7!\2\2JK\5\36\20\2K\t\3\2\2\2LM\5"+
-		"\16\b\2MP\7\"\2\2NO\7\13\2\2OQ\5\36\20\2PN\3\2\2\2PQ\3\2\2\2Q\13\3\2\2"+
-		"\2RS\7\"\2\2ST\7\13\2\2TU\5\36\20\2U\r\3\2\2\2VW\t\2\2\2W\17\3\2\2\2X"+
-		"Y\7\33\2\2YZ\7\3\2\2Z[\5\36\20\2[\\\7\4\2\2\\_\5,\27\2]^\7\34\2\2^`\5"+
-		",\27\2_]\3\2\2\2_`\3\2\2\2`\21\3\2\2\2ab\7\32\2\2bc\7\3\2\2cd\5\36\20"+
-		"\2de\7\4\2\2ef\5,\27\2f\23\3\2\2\2gh\5\16\b\2hi\7\"\2\2ij\7\3\2\2jk\5"+
-		"\30\r\2kl\7\4\2\2l\25\3\2\2\2mn\5\16\b\2no\7\"\2\2op\7\3\2\2pq\5\30\r"+
-		"\2qr\7\4\2\2rs\5,\27\2s\27\3\2\2\2tu\5\16\b\2u|\7\"\2\2vw\7\n\2\2wx\5"+
-		"\16\b\2xy\7\"\2\2y{\3\2\2\2zv\3\2\2\2{~\3\2\2\2|z\3\2\2\2|}\3\2\2\2}\u0080"+
-		"\3\2\2\2~|\3\2\2\2\177t\3\2\2\2\177\u0080\3\2\2\2\u0080\31\3\2\2\2\u0081"+
-		"\u0082\7\"\2\2\u0082\u0083\7\3\2\2\u0083\u0084\5\34\17\2\u0084\u0085\7"+
+		"\16\b\2MP\7#\2\2NO\7\13\2\2OQ\5\36\20\2PN\3\2\2\2PQ\3\2\2\2Q\13\3\2\2"+
+		"\2RS\7#\2\2ST\7\13\2\2TU\5\36\20\2U\r\3\2\2\2VW\t\2\2\2W\17\3\2\2\2XY"+
+		"\7\33\2\2YZ\7\3\2\2Z[\5\36\20\2[\\\7\4\2\2\\_\5,\27\2]^\7\34\2\2^`\5,"+
+		"\27\2_]\3\2\2\2_`\3\2\2\2`\21\3\2\2\2ab\7\32\2\2bc\7\3\2\2cd\5\36\20\2"+
+		"de\7\4\2\2ef\5,\27\2f\23\3\2\2\2gh\5\16\b\2hi\7#\2\2ij\7\3\2\2jk\5\30"+
+		"\r\2kl\7\4\2\2l\25\3\2\2\2mn\5\16\b\2no\7#\2\2op\7\3\2\2pq\5\30\r\2qr"+
+		"\7\4\2\2rs\5,\27\2s\27\3\2\2\2tu\5\16\b\2u|\7#\2\2vw\7\n\2\2wx\5\16\b"+
+		"\2xy\7#\2\2y{\3\2\2\2zv\3\2\2\2{~\3\2\2\2|z\3\2\2\2|}\3\2\2\2}\u0080\3"+
+		"\2\2\2~|\3\2\2\2\177t\3\2\2\2\177\u0080\3\2\2\2\u0080\31\3\2\2\2\u0081"+
+		"\u0082\7#\2\2\u0082\u0083\7\3\2\2\u0083\u0084\5\34\17\2\u0084\u0085\7"+
 		"\4\2\2\u0085\33\3\2\2\2\u0086\u008b\5\36\20\2\u0087\u0088\7\n\2\2\u0088"+
 		"\u008a\5\36\20\2\u0089\u0087\3\2\2\2\u008a\u008d\3\2\2\2\u008b\u0089\3"+
 		"\2\2\2\u008b\u008c\3\2\2\2\u008c\u008f\3\2\2\2\u008d\u008b\3\2\2\2\u008e"+
@@ -1682,12 +1682,12 @@ public class SimpleParser extends Parser {
 		"\u00ae\u00b0\5*\26\2\u00af\u00ad\3\2\2\2\u00b0\u00b3\3\2\2\2\u00b1\u00af"+
 		"\3\2\2\2\u00b1\u00b2\3\2\2\2\u00b2)\3\2\2\2\u00b3\u00b1\3\2\2\2\u00b4"+
 		"\u00b5\7\3\2\2\u00b5\u00b6\5\36\20\2\u00b6\u00b7\7\4\2\2\u00b7\u00be\3"+
-		"\2\2\2\u00b8\u00be\5\32\16\2\u00b9\u00be\7#\2\2\u00ba\u00be\7$\2\2\u00bb"+
-		"\u00be\7%\2\2\u00bc\u00be\7\"\2\2\u00bd\u00b4\3\2\2\2\u00bd\u00b8\3\2"+
-		"\2\2\u00bd\u00b9\3\2\2\2\u00bd\u00ba\3\2\2\2\u00bd\u00bb\3\2\2\2\u00bd"+
-		"\u00bc\3\2\2\2\u00be+\3\2\2\2\u00bf\u00c0\7\7\2\2\u00c0\u00c1\5\4\3\2"+
-		"\u00c1\u00c2\7\b\2\2\u00c2-\3\2\2\2\20\64GP_|\177\u008b\u008e\u0092\u009b"+
-		"\u00a2\u00a9\u00b1\u00bd";
+		"\2\2\2\u00b8\u00be\5\32\16\2\u00b9\u00be\7$\2\2\u00ba\u00be\7%\2\2\u00bb"+
+		"\u00be\7&\2\2\u00bc\u00be\7#\2\2\u00bd\u00b4\3\2\2\2\u00bd\u00b8\3\2\2"+
+		"\2\u00bd\u00b9\3\2\2\2\u00bd\u00ba\3\2\2\2\u00bd\u00bb\3\2\2\2\u00bd\u00bc"+
+		"\3\2\2\2\u00be+\3\2\2\2\u00bf\u00c0\7\7\2\2\u00c0\u00c1\5\4\3\2\u00c1"+
+		"\u00c2\7\b\2\2\u00c2-\3\2\2\2\20\64GP_|\177\u008b\u008e\u0092\u009b\u00a2"+
+		"\u00a9\u00b1\u00bd";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

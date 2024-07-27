@@ -1,7 +1,5 @@
 package proyectoFinal.Interpretador.TablaSimbolos;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,31 +16,31 @@ public class SymbolTable {
     }
 
     public boolean contains(String name) {
-        return globalSymbols.containsKey(name) || localSymbols.containsKey(name);
+        return localSymbols.containsKey(name) || globalSymbols.containsKey(name);
     }
 
     public Symbol getSymbol(String name) {
-        return globalSymbols.getOrDefault(name, localSymbols.get(name));
+        if (localSymbols.containsKey(name)) {
+            return localSymbols.get(name);
+        }
+        return globalSymbols.get(name);
     }
 
     public void clearLocalSymbols() {
         localSymbols.clear();
     }
 
-    public void writeToFile(String filePath) throws IOException {
-        try (FileWriter writer = new FileWriter(filePath)) {
-            if (globalSymbols.isEmpty() && localSymbols.isEmpty()) {
-                writer.write("Symbol table is empty.\n");
-            } else {
-                writer.write("Global Symbols:\n");
-                for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
-                    writer.write(entry.getKey() + ": " + entry.getValue().toString() + "\n");
-                }
-                writer.write("Local Symbols:\n");
-                for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
-                    writer.write(entry.getKey() + ": " + entry.getValue().toString() + "\n");
-                }
-            }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Global Symbols:\n");
+        for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
+            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
         }
+        sb.append("Local Symbols:\n");
+        for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
+            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+        }
+        return sb.toString();
     }
 }

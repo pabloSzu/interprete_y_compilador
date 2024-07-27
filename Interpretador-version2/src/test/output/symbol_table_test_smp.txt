@@ -1,0 +1,7 @@
+Global Symbols:
+t : Symbol{name='t', type='int'}
+Local Symbols:
+a : Symbol{name='a', type='int'}
+b : Symbol{name='b', type='int'}
+c : Symbol{name='c', type='double'}
+d : Symbol{name='d', type='char'}

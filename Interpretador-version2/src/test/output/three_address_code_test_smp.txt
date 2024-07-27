@@ -1,0 +1,12 @@
+t = a
+a = 10
+b = 20
+c = 15.5
+d = 'x'
+t0 = a + b
+a = t0
+t1 = a > b
+if t1 goto L0
+goto L1
+L0:
+L1:

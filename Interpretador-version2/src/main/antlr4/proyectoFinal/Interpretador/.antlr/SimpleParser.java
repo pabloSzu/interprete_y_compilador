@@ -27,8 +27,8 @@ public class SimpleParser extends Parser {
 		PA=1, PC=2, CA=3, CC=4, LA=5, LC=6, PYC=7, COMA=8, IGUAL=9, MAYOR=10, 
 		MAYOR_IGUAL=11, MENOR=12, MENOR_IGUAL=13, EQL=14, DISTINTO=15, SUM=16, 
 		RES=17, MUL=18, DIV=19, MOD=20, OR=21, AND=22, NOT=23, WHILE=24, IF=25, 
-		ELSE=26, INT=27, CHAR=28, DOUBLE=29, VOID=30, RETURN=31, ID=32, INTEGER=33, 
-		DECIMAL=34, CHARACTER=35, WS=36, OTRO=37;
+		ELSE=26, INT=27, CHAR=28, DOUBLE=29, VOID=30, RETURN=31, PRINT=32, ID=33, 
+		INTEGER=34, DECIMAL=35, CHARACTER=36, WS=37, OTRO=38;
 	public static final int
 		RULE_prog = 0, RULE_instrucciones = 1, RULE_instruccion = 2, RULE_retorno = 3, 
 		RULE_declaracion = 4, RULE_asignacion = 5, RULE_tipoDato = 6, RULE_condif = 7, 
@@ -53,7 +53,7 @@ public class SimpleParser extends Parser {
 			null, "'('", "')'", "'['", "']'", "'{'", "'}'", "';'", "','", "'='", 
 			"'>'", "'>='", "'<'", "'<='", "'=='", "'!='", "'+'", "'-'", "'*'", "'/'", 
 			"'%'", "'||'", "'&&'", "'!'", "'while'", "'if'", "'else'", "'int'", "'char'", 
-			"'double'", "'void'", "'return'"
+			"'double'", "'void'", "'return'", "'print'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -62,8 +62,8 @@ public class SimpleParser extends Parser {
 			null, "PA", "PC", "CA", "CC", "LA", "LC", "PYC", "COMA", "IGUAL", "MAYOR", 
 			"MAYOR_IGUAL", "MENOR", "MENOR_IGUAL", "EQL", "DISTINTO", "SUM", "RES", 
 			"MUL", "DIV", "MOD", "OR", "AND", "NOT", "WHILE", "IF", "ELSE", "INT", 
-			"CHAR", "DOUBLE", "VOID", "RETURN", "ID", "INTEGER", "DECIMAL", "CHARACTER", 
-			"WS", "OTRO"
+			"CHAR", "DOUBLE", "VOID", "RETURN", "PRINT", "ID", "INTEGER", "DECIMAL", 
+			"CHARACTER", "WS", "OTRO"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -198,7 +198,7 @@ public class SimpleParser extends Parser {
 				setState(50); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 8506048544L) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 12801015840L) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -853,7 +853,7 @@ public class SimpleParser extends Parser {
 			setState(140);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 64424509442L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 128849018882L) != 0)) {
 				{
 				setState(132);
 				operacion();
@@ -1364,7 +1364,7 @@ public class SimpleParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001%\u00c2\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001&\u00c2\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
@@ -1421,9 +1421,9 @@ public class SimpleParser extends Parser {
 		"\u0000E>\u0001\u0000\u0000\u0000EA\u0001\u0000\u0000\u0000ED\u0001\u0000"+
 		"\u0000\u0000F\u0005\u0001\u0000\u0000\u0000GH\u0005\u001f\u0000\u0000"+
 		"HI\u0003\u001c\u000e\u0000I\u0007\u0001\u0000\u0000\u0000JK\u0003\f\u0006"+
-		"\u0000KN\u0005 \u0000\u0000LM\u0005\t\u0000\u0000MO\u0003\u001c\u000e"+
+		"\u0000KN\u0005!\u0000\u0000LM\u0005\t\u0000\u0000MO\u0003\u001c\u000e"+
 		"\u0000NL\u0001\u0000\u0000\u0000NO\u0001\u0000\u0000\u0000O\t\u0001\u0000"+
-		"\u0000\u0000PQ\u0005 \u0000\u0000QR\u0005\t\u0000\u0000RS\u0003\u001c"+
+		"\u0000\u0000PQ\u0005!\u0000\u0000QR\u0005\t\u0000\u0000RS\u0003\u001c"+
 		"\u000e\u0000S\u000b\u0001\u0000\u0000\u0000TU\u0007\u0000\u0000\u0000"+
 		"U\r\u0001\u0000\u0000\u0000VW\u0005\u0019\u0000\u0000WX\u0005\u0001\u0000"+
 		"\u0000XY\u0003\u001c\u000e\u0000YZ\u0005\u0002\u0000\u0000Z]\u0003*\u0015"+
@@ -1431,17 +1431,17 @@ public class SimpleParser extends Parser {
 		"\u0000\u0000]^\u0001\u0000\u0000\u0000^\u000f\u0001\u0000\u0000\u0000"+
 		"_`\u0005\u0018\u0000\u0000`a\u0005\u0001\u0000\u0000ab\u0003\u001c\u000e"+
 		"\u0000bc\u0005\u0002\u0000\u0000cd\u0003*\u0015\u0000d\u0011\u0001\u0000"+
-		"\u0000\u0000ef\u0003\f\u0006\u0000fg\u0005 \u0000\u0000gh\u0005\u0001"+
+		"\u0000\u0000ef\u0003\f\u0006\u0000fg\u0005!\u0000\u0000gh\u0005\u0001"+
 		"\u0000\u0000hi\u0003\u0016\u000b\u0000ij\u0005\u0002\u0000\u0000j\u0013"+
-		"\u0001\u0000\u0000\u0000kl\u0003\f\u0006\u0000lm\u0005 \u0000\u0000mn"+
+		"\u0001\u0000\u0000\u0000kl\u0003\f\u0006\u0000lm\u0005!\u0000\u0000mn"+
 		"\u0005\u0001\u0000\u0000no\u0003\u0016\u000b\u0000op\u0005\u0002\u0000"+
 		"\u0000pq\u0003*\u0015\u0000q\u0015\u0001\u0000\u0000\u0000rs\u0003\f\u0006"+
-		"\u0000sz\u0005 \u0000\u0000tu\u0005\b\u0000\u0000uv\u0003\f\u0006\u0000"+
-		"vw\u0005 \u0000\u0000wy\u0001\u0000\u0000\u0000xt\u0001\u0000\u0000\u0000"+
+		"\u0000sz\u0005!\u0000\u0000tu\u0005\b\u0000\u0000uv\u0003\f\u0006\u0000"+
+		"vw\u0005!\u0000\u0000wy\u0001\u0000\u0000\u0000xt\u0001\u0000\u0000\u0000"+
 		"y|\u0001\u0000\u0000\u0000zx\u0001\u0000\u0000\u0000z{\u0001\u0000\u0000"+
 		"\u0000{~\u0001\u0000\u0000\u0000|z\u0001\u0000\u0000\u0000}r\u0001\u0000"+
 		"\u0000\u0000}~\u0001\u0000\u0000\u0000~\u0017\u0001\u0000\u0000\u0000"+
-		"\u007f\u0080\u0005 \u0000\u0000\u0080\u0081\u0005\u0001\u0000\u0000\u0081"+
+		"\u007f\u0080\u0005!\u0000\u0000\u0080\u0081\u0005\u0001\u0000\u0000\u0081"+
 		"\u0082\u0003\u001a\r\u0000\u0082\u0083\u0005\u0002\u0000\u0000\u0083\u0019"+
 		"\u0001\u0000\u0000\u0000\u0084\u0089\u0003\u001c\u000e\u0000\u0085\u0086"+
 		"\u0005\b\u0000\u0000\u0086\u0088\u0003\u001c\u000e\u0000\u0087\u0085\u0001"+
@@ -1471,8 +1471,8 @@ public class SimpleParser extends Parser {
 		"\u00af\u0001\u0000\u0000\u0000\u00b2\u00b3\u0005\u0001\u0000\u0000\u00b3"+
 		"\u00b4\u0003\u001c\u000e\u0000\u00b4\u00b5\u0005\u0002\u0000\u0000\u00b5"+
 		"\u00bc\u0001\u0000\u0000\u0000\u00b6\u00bc\u0003\u0018\f\u0000\u00b7\u00bc"+
-		"\u0005!\u0000\u0000\u00b8\u00bc\u0005\"\u0000\u0000\u00b9\u00bc\u0005"+
-		"#\u0000\u0000\u00ba\u00bc\u0005 \u0000\u0000\u00bb\u00b2\u0001\u0000\u0000"+
+		"\u0005\"\u0000\u0000\u00b8\u00bc\u0005#\u0000\u0000\u00b9\u00bc\u0005"+
+		"$\u0000\u0000\u00ba\u00bc\u0005!\u0000\u0000\u00bb\u00b2\u0001\u0000\u0000"+
 		"\u0000\u00bb\u00b6\u0001\u0000\u0000\u0000\u00bb\u00b7\u0001\u0000\u0000"+
 		"\u0000\u00bb\u00b8\u0001\u0000\u0000\u0000\u00bb\u00b9\u0001\u0000\u0000"+
 		"\u0000\u00bb\u00ba\u0001\u0000\u0000\u0000\u00bc)\u0001\u0000\u0000\u0000"+
