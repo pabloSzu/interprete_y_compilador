@@ -1,5 +1,7 @@
 package proyectoFinal.Interpretador.TablaSimbolos;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,31 +18,46 @@ public class SymbolTable {
     }
 
     public boolean contains(String name) {
-        return localSymbols.containsKey(name) || globalSymbols.containsKey(name);
+        return globalSymbols.containsKey(name) || localSymbols.containsKey(name);
     }
 
     public Symbol getSymbol(String name) {
-        if (localSymbols.containsKey(name)) {
-            return localSymbols.get(name);
-        }
-        return globalSymbols.get(name);
+        return globalSymbols.getOrDefault(name, localSymbols.get(name));
     }
 
     public void clearLocalSymbols() {
         localSymbols.clear();
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Global Symbols:\n");
-        for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
-            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+    public void writeToFile(String filePath) throws IOException {
+        try (FileWriter writer = new FileWriter(filePath)) {
+            if (globalSymbols.isEmpty() && localSymbols.isEmpty()) {
+                writer.write("Symbol table is empty.\n");
+            } else {
+                writer.write("Global Symbols:\n");
+                for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
+                    writer.write(entry.getKey() + ": " + entry.getValue().toString() + "\n");
+                }
+                writer.write("Local Symbols:\n");
+                for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
+                    writer.write(entry.getKey() + ": " + entry.getValue().toString() + "\n");
+                }
+            }
         }
-        sb.append("Local Symbols:\n");
-        for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
-            sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n");
+    }
+
+    public void print() {
+        if (globalSymbols.isEmpty() && localSymbols.isEmpty()) {
+            System.out.println("Symbol table is empty.");
+        } else {
+            System.out.println("Global Symbols:");
+            for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+            }
+            System.out.println("Local Symbols:");
+            for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+            }
         }
-        return sb.toString();
     }
 }

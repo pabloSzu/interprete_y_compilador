@@ -62,8 +62,7 @@ DOUBLE   : 'double' ;
 VOID     : 'void' ;
 
 RETURN   : 'return';
-
-PRINT    : 'print';
+PRINT    : 'print'; // Agrega la palabra clave print
 
 ID       : [a-zA-Z_][a-zA-Z_0-9]* ;
 
@@ -91,7 +90,7 @@ instruccion
     | llamadaFuncion PYC
     | retorno PYC
     | bloque
-    | printStmt PYC
+    | llamadaPrint PYC // Agrega la regla para la llamada a print
     ;
 
 retorno : RETURN operacion ;
@@ -123,6 +122,8 @@ definicionFuncion : tipoDato ID PA parametros PC bloque ;
 parametros : (tipoDato ID (COMA tipoDato ID)*)? ;
 
 llamadaFuncion : ID PA argumentos PC ;
+
+llamadaPrint : PRINT PA operacion PC ; // Regla para print
 
 argumentos : (operacion (COMA operacion)*)? ;
 
@@ -157,6 +158,7 @@ term
 factor
     : PA operacion PC
     | llamadaFuncion
+    | llamadaPrint // Agrega el print como un factor válido
     | INTEGER
     | DECIMAL
     | CHARACTER
@@ -165,8 +167,4 @@ factor
 
 bloque
     : LA instrucciones LC
-    ;
-
-printStmt
-    : PRINT PA operacion PC
     ;

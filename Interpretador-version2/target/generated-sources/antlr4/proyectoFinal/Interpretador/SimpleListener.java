@@ -146,6 +146,16 @@ public interface SimpleListener extends ParseTreeListener {
 	 */
 	void exitLlamadaFuncion(SimpleParser.LlamadaFuncionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpleParser#llamadaPrint}.
+	 * @param ctx the parse tree
+	 */
+	void enterLlamadaPrint(SimpleParser.LlamadaPrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleParser#llamadaPrint}.
+	 * @param ctx the parse tree
+	 */
+	void exitLlamadaPrint(SimpleParser.LlamadaPrintContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpleParser#argumentos}.
 	 * @param ctx the parse tree
 	 */
@@ -235,14 +245,4 @@ public interface SimpleListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBloque(SimpleParser.BloqueContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SimpleParser#printStmt}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrintStmt(SimpleParser.PrintStmtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SimpleParser#printStmt}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrintStmt(SimpleParser.PrintStmtContext ctx);
 }

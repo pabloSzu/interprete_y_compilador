@@ -1,10 +1,9 @@
 Global Symbols:
-varGlobal_1 : Symbol{name='varGlobal_1', type='int'}
+suma: Symbol{name='suma', type='int'}
+main: Symbol{name='main', type='int'}
 Local Symbols:
-a : Symbol{name='a', type='int'}
-res : Symbol{name='res', type='int'}
-b : Symbol{name='b', type='int'}
-c : Symbol{name='c', type='double'}
-d : Symbol{name='d', type='char'}
-resultado : Symbol{name='resultado', type='int'}
-z : Symbol{name='z', type='int'}
+a: Symbol{name='a', type='int'}
+b: Symbol{name='b', type='int'}
+c: Symbol{name='c', type='double'}
+d: Symbol{name='d', type='char'}
+resultado: Symbol{name='resultado', type='int'}

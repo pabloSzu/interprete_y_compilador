@@ -97,6 +97,12 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLlamadaFuncion(SimpleParser.LlamadaFuncionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SimpleParser#llamadaPrint}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLlamadaPrint(SimpleParser.LlamadaPrintContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SimpleParser#argumentos}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -150,10 +156,4 @@ public interface SimpleVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBloque(SimpleParser.BloqueContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SimpleParser#printStmt}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrintStmt(SimpleParser.PrintStmtContext ctx);
 }
