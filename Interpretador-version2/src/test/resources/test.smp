@@ -1,12 +1,28 @@
+int factorial(int n) {
+    int result = 1;
+    if (n <= 1) {
+        return result;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
 
 int main() {
-    
     int a = 10;
     int b = 20;
     double c = 15.5;
     char d = 'x';
-    
-    
+    int resultado;
+    int temp;
+
     a = a + b;
     
     if (a > b) {
@@ -14,20 +30,26 @@ int main() {
     } else {
         print(b);
     }
-    
 
     while (a < 30) {
         a = a + 1;
     }
-    
+
+    temp = factorial(a);
+    print(temp);
 
     int suma(int x, int y) {
         return x + y;
     }
-    
 
-    int resultado = suma(a, b);
-    
+    int resultadoSuma = suma(a, b);
+    print(resultadoSuma);
+
+    int fibResult = fibonacci(5);
+    print(fibResult);
+
+    resultado = suma(factorial(5), fibonacci(5));
+    print(resultado);
 
     return resultado;
 }

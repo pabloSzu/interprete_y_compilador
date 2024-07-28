@@ -1,6 +1,5 @@
 package proyectoFinal.Interpretador;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -11,10 +10,12 @@ import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
 public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
 
     private SymbolTable symbolTable = new SymbolTable();
+    private CustomErrors customErrors = new CustomErrors();
     private List<String> errors = new ArrayList<>();
     private Stack<Boolean> contextStack = new Stack<>();
     private List<String> threeAddressCode = new ArrayList<>();
     private List<String> optimizedCode = new ArrayList<>();
+    private int tempCount = 0;
 
     public SimpleCustomVisitor() {
         contextStack.push(false); // Start in global context
@@ -24,14 +25,8 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitProg(SimpleParser.ProgContext ctx) {
         System.out.println("Visiting prog...");
         visitChildren(ctx);
-        try {
-            symbolTable.writeToFile("symbol_table.txt");
-            writeThreeAddressCodeToFile("three_address_code.txt");
-            generateOptimizedCode();
-            writeOptimizedCodeToFile("optimized_code.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        generateOptimizedCode();
+        printCode(); // Print the codes with comments
         return null;
     }
 
@@ -53,10 +48,17 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
             System.out.println("Added function symbol: " + functionName + " of type: " + returnType);
         }
         contextStack.push(true); // Entering a new function (local context)
+        
+        // Create a new local context for the function
+        symbolTable.enterLocalScope();
+        
         visit(ctx.parametros());
         visit(ctx.bloque());
+        
+        // Exit the local context of the function
+        symbolTable.exitLocalScope();
+        
         contextStack.pop(); // Leaving the function (return to previous context)
-        symbolTable.clearLocalSymbols();
         return null;
     }
 
@@ -77,9 +79,13 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitAsignacion(SimpleParser.AsignacionContext ctx) {
         String varName = ctx.ID().getText();
         if (!symbolTable.contains(varName)) {
-            errors.add("Error: linea: " + ctx.start.getLine() + "; '" + varName + "' no ha sido declarado (Error semantico)");
+            customErrors.idNoDeclarado(String.valueOf(ctx.start.getLine()), varName);
         }
-        String code = varName + " = " + ctx.operacion().getText() + ";";
+        String operation = ctx.operacion().getText();
+        String tempVar = generateTempVar();
+        String code = tempVar + " = " + operation + ";";
+        threeAddressCode.add(code);
+        code = varName + " = " + tempVar + ";";
         threeAddressCode.add(code);
         return visitChildren(ctx);
     }
@@ -88,7 +94,7 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitLlamadaFuncion(SimpleParser.LlamadaFuncionContext ctx) {
         String functionName = ctx.ID().getText();
         if (!symbolTable.contains(functionName)) {
-            errors.add("Error: linea: " + ctx.start.getLine() + "; '" + functionName + "' no ha sido declarado (Error semantico)");
+            customErrors.funcionNoDeclarada(String.valueOf(ctx.start.getLine()), functionName);
         }
         String code = "call " + functionName + "();";
         threeAddressCode.add(code);
@@ -134,6 +140,10 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
         return null;
     }
 
+    private String generateTempVar() {
+        return "t" + (tempCount++);
+    }
+
     public SymbolTable getSymbolTable() {
         return symbolTable;
     }
@@ -151,16 +161,18 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     }
 
     private void generateOptimizedCode() {
-        // Aquí podrías agregar la lógica para optimizar el código de tres direcciones
-        // Por simplicidad, vamos a copiar el código de tres direcciones tal como está
-        optimizedCode.addAll(threeAddressCode);
+        OptimizedCode optimizedCodeGenerator = new OptimizedCode(threeAddressCode);
+        this.optimizedCode = optimizedCodeGenerator.getOptimizedCode();
     }
 
-    public void writeThreeAddressCodeToFile(String filePath) throws IOException {
-        java.nio.file.Files.write(java.nio.file.Paths.get(filePath), threeAddressCode);
-    }
-
-    public void writeOptimizedCodeToFile(String filePath) throws IOException {
-        java.nio.file.Files.write(java.nio.file.Paths.get(filePath), optimizedCode);
+    private void printCode() {
+        System.out.println("Three Address Code with Comments:");
+        for (String line : threeAddressCode) {
+            System.out.println(line);
+        }
+        System.out.println("\nOptimized Code with Comments:");
+        for (String line : optimizedCode) {
+            System.out.println(line);
+        }
     }
 }

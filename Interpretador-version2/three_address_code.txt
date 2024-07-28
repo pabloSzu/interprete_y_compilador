@@ -1,4 +1,0 @@
-a = a+b;
-print(a);
-print(b);
-a = a+1;
