@@ -1,0 +1,61 @@
+
+int factorial(int n) {
+    int result = 1;
+    if (n <= 1) {
+        return result;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+}
+
+int suma(int x, int y) {
+    return x + y;
+}
+
+int prueba() {
+    a = 10; 
+    return 0;
+}
+
+int main() {
+    int a = 10;
+    int b = 20;
+    double c = 15.5;
+    char d = 'x';
+    int resultado;
+    int temp;
+
+    a = a + b;
+    
+    if (a > b) {
+        printf("%d\n", a);
+    } else {
+        printf("%d\n", b);
+    }
+
+    while (a < 30) {
+        a = a + 1;
+    }
+
+    temp = factorial(a);
+    printf("%d\n", temp);
+
+    int resultadoSuma = suma(a, b);
+    printf("%d\n", resultadoSuma);
+
+    int fibResult = fibonacci(5);
+    printf("%d\n", fibResult);
+
+    resultado = suma(factorial(5), fibonacci(5));
+    printf("%d\n", resultado);
+
+    return 0;
+}

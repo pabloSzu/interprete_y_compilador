@@ -1,0 +1,100 @@
+func factorial {
+param n
+{
+t0 : = 1;  // Optimized by propagating constant value.
+result := t0
+if t1 goto L0
+{
+{
+}
+}
+goto L1
+L0: {
+{
+t2 := call factorial(n-1)
+}
+} L1:
+}
+return t2
+}
+func fibonacci {
+param n
+{
+if t3 goto L2
+{
+{
+}
+}
+goto L3
+L2: {
+{
+t4 := call fibonacci(n-1)
+t5 := call fibonacci(n-2)
+}
+} L3:
+}
+return t5
+}
+func suma {
+param x
+param y
+{
+}
+return t5
+}
+func prueba {
+{
+t6 : = 10;  // Optimized by propagating constant value.
+a := t6
+}
+return t6
+}
+func main {
+{
+t7 : = 10;  // Optimized by propagating constant value.
+a := t7
+t8 : = 20;  // Optimized by propagating constant value.
+b := t8
+t9 := 15.5
+c := t9
+t10 := 'x'
+d := t10
+t11 := a+b
+a := t11
+t12 := a>b
+if t12 goto L4
+{
+{
+}
+}
+goto L5
+L4: {
+{
+}
+} L5:
+L6:
+t13 := a<30
+if t13 goto L7
+{
+{
+t14 := a+1
+a := t14
+}
+}
+goto L6
+L7:
+t15 := factorial(a)
+temp := t15
+t16 := call factorial(a)
+t17 := suma(a,b)
+resultadoSuma := t17
+t18 := fibonacci(5)
+fibResult := t18
+t19 := suma(factorial(5),fibonacci(5))
+resultado := t19
+t20 := call suma(factorial(5), fibonacci(5))
+t21 := call factorial(5)
+t22 := call fibonacci(5)
+}
+return t22
+}
