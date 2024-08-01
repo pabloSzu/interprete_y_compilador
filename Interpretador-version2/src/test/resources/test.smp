@@ -18,6 +18,8 @@ int fibonacci(int n) {
 int main() {
     int a = 10;
     int b = 20;
+    b = 30;
+    b = a;
     double c = 15.5;
     char d = 'x';
     int resultado;
@@ -41,6 +43,9 @@ int main() {
     int suma(int x, int y) {
         return x + y;
     }
+
+    int abc;
+    char abc;
 
     int resultadoSuma = suma(a, b);
     print(resultadoSuma);

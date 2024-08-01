@@ -42,7 +42,14 @@ public class SymbolTable {
         return globalSymbols.get(name);
     }
 
-    // Métodos para manejar el stack de símbolos locales
+    public Function getFunction(String name) {
+        Symbol symbol = globalSymbols.get(name);
+        if (symbol instanceof Function) {
+            return (Function) symbol;
+        }
+        return null;
+    }
+
     public void enterLocalScope() {
         localSymbolStack.push(new HashMap<>());
     }

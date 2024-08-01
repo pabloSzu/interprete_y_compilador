@@ -5,52 +5,78 @@ import java.util.Map;
 import java.util.Stack;
 
 public class SymbolTable {
-    private Map<String, Symbol> globalSymbols = new HashMap<>();
-    private Stack<Map<String, Symbol>> localSymbolStack = new Stack<>();
+    private Map<String, Symbol> globalSymbols;
+    private Map<String, Function> globalFunctions;
+    private Stack<Map<String, Symbol>> localScopes;
+    private String currentFunctionContext;
+
+    public SymbolTable() {
+        this.globalSymbols = new HashMap<>();
+        this.globalFunctions = new HashMap<>();
+        this.localScopes = new Stack<>();
+        this.currentFunctionContext = null;
+    }
+
+    public void enterLocalScope(String functionName) {
+        currentFunctionContext = functionName;
+        localScopes.push(new HashMap<>());
+    }
+
+    public void exitLocalScope() {
+        localScopes.pop();
+        currentFunctionContext = localScopes.isEmpty() ? null : currentFunctionContext;
+    }
 
     public void addGlobalSymbol(String name, Symbol symbol) {
         globalSymbols.put(name, symbol);
     }
 
     public void addLocalSymbol(String name, Symbol symbol) {
-        if (!localSymbolStack.isEmpty()) {
-            localSymbolStack.peek().put(name, symbol);
+        symbol.setFunctionContext(currentFunctionContext);
+        if (!localScopes.isEmpty()) {
+            localScopes.peek().put(name, symbol);
         }
     }
 
-    public void enterLocalScope() {
-        localSymbolStack.push(new HashMap<>());
+    public void addGlobalFunction(Function function) {
+        globalFunctions.put(function.getName(), function);
     }
 
-    public void exitLocalScope() {
-        if (!localSymbolStack.isEmpty()) {
-            localSymbolStack.pop();
+    public Symbol getSymbol(String name) {
+        for (Map<String, Symbol> scope : localScopes) {
+            if (scope.containsKey(name)) {
+                return scope.get(name);
+            }
         }
+        return globalSymbols.get(name);
     }
 
     public boolean contains(String name) {
-        if (!localSymbolStack.isEmpty() && localSymbolStack.peek().containsKey(name)) {
-            return true;
-        }
-        return globalSymbols.containsKey(name);
+        return getSymbol(name) != null;
+    }
+
+    public boolean inLocalScope() {
+        return !localScopes.isEmpty();
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Global Symbols:\n");
-        for (Map.Entry<String, Symbol> entry : globalSymbols.entrySet()) {
-            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        for (Symbol symbol : globalSymbols.values()) {
+            sb.append(symbol).append("\n");
         }
-        sb.append("Local Symbols:\n");
-        for (int i = localSymbolStack.size() - 1; i >= 0; i--) {
-            sb.append("Scope ").append(i).append(":\n");
-            Map<String, Symbol> localSymbols = localSymbolStack.get(i);
-            for (Map.Entry<String, Symbol> entry : localSymbols.entrySet()) {
-                sb.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+        sb.append("Global Functions:\n");
+        for (Function function : globalFunctions.values()) {
+            sb.append(function).append("\n");
+        }
+        sb.append("Local Scopes:\n");
+        for (Map<String, Symbol> scope : localScopes) {
+            sb.append("Scope:\n");
+            for (Symbol symbol : scope.values()) {
+                sb.append(symbol).append("\n");
             }
         }
         return sb.toString();
     }
-
 }

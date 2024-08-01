@@ -1,14 +1,15 @@
 Global Symbols:
-suma: Symbol{name='suma', type='int'}
-fibonacci: Symbol{name='fibonacci', type='int'}
-factorial: Symbol{name='factorial', type='int'}
-main: Symbol{name='main', type='int'}
+suma: Symbol{name='suma', type='function'} Parameters: [x, y], Has return: false
+fibonacci: Symbol{name='fibonacci', type='function'} Parameters: [n], Has return: false
+factorial: Symbol{name='factorial', type='function'} Parameters: [n], Has return: false
+main: Symbol{name='main', type='function'} Parameters: [], Has return: false
 Local Symbols:
 result: Symbol{name='result', type='int'}
 a: Symbol{name='a', type='int'}
 b: Symbol{name='b', type='int'}
 temp: Symbol{name='temp', type='int'}
 c: Symbol{name='c', type='double'}
+abc: Symbol{name='abc', type='char'}
 d: Symbol{name='d', type='char'}
 resultado: Symbol{name='resultado', type='int'}
 fibResult: Symbol{name='fibResult', type='int'}

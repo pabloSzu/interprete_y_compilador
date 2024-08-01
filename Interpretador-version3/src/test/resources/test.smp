@@ -27,11 +27,22 @@ int prueba() {
 
 int main() {
     int a = 10;
+
     int b = 20;
+
+    a = b;
+
+    b = a;
+
+    
     double c = 15.5;
     char d = 'x';
     int resultado;
     int temp;
+
+    int resta(int a){
+        a = a-1;
+    }
 
     a = a + b;
     

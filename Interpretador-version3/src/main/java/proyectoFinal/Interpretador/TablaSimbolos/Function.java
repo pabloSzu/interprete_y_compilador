@@ -4,48 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Function extends Symbol {
+    private List<String> parameters;
+    private boolean hasReturnStatement;
 
-    private List<String> parameters; // Lista de parámetros de la función
-    private boolean hasReturn; // Indica si la función tiene una declaración de retorno
-
-    public Function(String name) {
-        super(name, "function"); // Asumiendo que "function" es el tipo para Function
+    public Function(String name, String type) {
+        super(name, type);
         this.parameters = new ArrayList<>();
-        this.hasReturn = false;
+        this.hasReturnStatement = false;
     }
 
-    // Añade un parámetro a la lista de parámetros de la función.
-    public void addParameter(String paramName) {
-        if (paramName == null || paramName.isEmpty()) {
-            throw new IllegalArgumentException("Parameter name cannot be null or empty");
-        }
-        if (!parameters.contains(paramName)) {
-            parameters.add(paramName);
-        }
+    public void addParameter(String parameter) {
+        parameters.add(parameter);
     }
 
-    // Devuelve la lista de parámetros de la función.
     public List<String> getParameters() {
-        return new ArrayList<>(parameters); // Retorna una copia para proteger el estado interno
+        return parameters;
     }
 
-    // Verifica si la función tiene un parámetro con el nombre dado.
-    public boolean hasParameter(String paramName) {
-        return parameters.contains(paramName);
+    public boolean hasReturnStatement() {
+        return hasReturnStatement;
     }
 
-    // Marca la función como que tiene una declaración de retorno.
-    public void setHasReturn(boolean hasReturn) {
-        this.hasReturn = hasReturn;
-    }
-
-    // Verifica si la función tiene una declaración de retorno.
-    public boolean hasReturn() {
-        return hasReturn;
+    public void setHasReturnStatement(boolean hasReturnStatement) {
+        this.hasReturnStatement = hasReturnStatement;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " Parameters: " + parameters.toString() + ", Has return: " + hasReturn;
+        return "Function{" +
+                "name='" + getName() + '\'' +
+                ", type='" + getType() + '\'' +
+                ", parameters=" + parameters +
+                ", hasReturnStatement=" + hasReturnStatement +
+                '}';
     }
 }

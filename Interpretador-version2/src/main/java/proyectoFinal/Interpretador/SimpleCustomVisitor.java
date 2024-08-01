@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import proyectoFinal.Interpretador.TablaSimbolos.Function;
 import proyectoFinal.Interpretador.TablaSimbolos.Symbol;
 import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
 
@@ -16,6 +17,7 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     private List<String> threeAddressCode = new ArrayList<>();
     private List<String> optimizedCode = new ArrayList<>();
     private int tempCount = 0;
+    private int labelCount = 0;
 
     public SimpleCustomVisitor() {
         contextStack.push(false); // Start in global context
@@ -34,7 +36,19 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitDeclaracionFuncion(SimpleParser.DeclaracionFuncionContext ctx) {
         String functionName = ctx.ID().getText();
         String returnType = ctx.tipoDato().getText();
-        symbolTable.addGlobalSymbol(functionName, new Symbol(functionName, returnType));
+        Function functionSymbol = new Function(functionName);
+        
+        // Add parameters to function symbol
+        SimpleParser.ParametrosContext parametrosCtx = ctx.parametros();
+        if (parametrosCtx != null) {
+            for (int i = 0; i < parametrosCtx.getChildCount(); i += 3) {
+                String paramType = parametrosCtx.getChild(i).getText();
+                String paramName = parametrosCtx.getChild(i + 1).getText();
+                functionSymbol.addParameter(paramName);
+            }
+        }
+        
+        symbolTable.addGlobalSymbol(functionName, functionSymbol);
         System.out.println("Added function symbol: " + functionName + " of type: " + returnType);
         return null;
     }
@@ -43,22 +57,34 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitDefinicionFuncion(SimpleParser.DefinicionFuncionContext ctx) {
         String functionName = ctx.ID().getText();
         String returnType = ctx.tipoDato().getText();
-        if (!symbolTable.contains(functionName)) {
-            symbolTable.addGlobalSymbol(functionName, new Symbol(functionName, returnType));
-            System.out.println("Added function symbol: " + functionName + " of type: " + returnType);
+
+        // Ensure the function is defined in the global scope
+        Function functionSymbol = (Function) symbolTable.getSymbol(functionName);
+        if (functionSymbol == null) {
+            functionSymbol = new Function(functionName);
+            symbolTable.addGlobalSymbol(functionName, functionSymbol);
         }
-        contextStack.push(true); // Entering a new function (local context)
-        
-        // Create a new local context for the function
+
+        // Enter local scope for function
         symbolTable.enterLocalScope();
-        
-        visit(ctx.parametros());
+        contextStack.push(true); // Entering function context
+
+        // Process function parameters
+        SimpleParser.ParametrosContext parametrosCtx = ctx.parametros();
+        if (parametrosCtx != null) {
+            for (int i = 0; i < parametrosCtx.getChildCount(); i += 3) {
+                String paramType = parametrosCtx.getChild(i).getText();
+                String paramName = parametrosCtx.getChild(i + 1).getText();
+                functionSymbol.addParameter(paramName);
+            }
+        }
+
+        // Process function body
         visit(ctx.bloque());
-        
-        // Exit the local context of the function
+
+        // Exit local scope of the function
         symbolTable.exitLocalScope();
-        
-        contextStack.pop(); // Leaving the function (return to previous context)
+        contextStack.pop(); // Leaving function context
         return null;
     }
 
@@ -66,10 +92,14 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
     public Void visitDeclaracion(SimpleParser.DeclaracionContext ctx) {
         String varName = ctx.ID().getText();
         String varType = ctx.tipoDato().getText();
+        Symbol symbol = new Symbol(varName, varType);
+        
         if (contextStack.peek()) {
-            symbolTable.addLocalSymbol(varName, new Symbol(varName, varType));
+            // Inside a function
+            symbolTable.addLocalSymbol(varName, symbol);
         } else {
-            symbolTable.addGlobalSymbol(varName, new Symbol(varName, varType));
+            // Global scope
+            symbolTable.addGlobalSymbol(varName, symbol);
         }
         System.out.println("Added symbol: " + varName + " of type: " + varType);
         return null;
@@ -96,6 +126,12 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
         if (!symbolTable.contains(functionName)) {
             customErrors.funcionNoDeclarada(String.valueOf(ctx.start.getLine()), functionName);
         }
+        
+        Function function = symbolTable.getFunction(functionName);
+        if (function != null) {
+            // You can add parameter checking here if needed
+        }
+        
         String code = "call " + functionName + "();";
         threeAddressCode.add(code);
         return visitChildren(ctx);
@@ -111,37 +147,64 @@ public class SimpleCustomVisitor extends SimpleBaseVisitor<Void> {
 
     @Override
     public Void visitCondif(SimpleParser.CondifContext ctx) {
-        visit(ctx.operacion());
-        contextStack.push(true); // Entering a new block (local context)
+        String conditionTemp = generateTempVar();
+        visit(ctx.operacion()); // Visit condition expression
+        threeAddressCode.add(conditionTemp + " = " + ctx.operacion().getText() + ";");
+        
+        String endIfLabel = generateLabel();
+        String elseLabel = generateLabel();
+
+        threeAddressCode.add("if " + conditionTemp + " == 0 goto " + elseLabel + ";");
+        contextStack.push(true); // Entering if block context
         visit(ctx.bloque(0));
-        contextStack.pop(); // Leaving the block
+        contextStack.pop(); // Leaving if block context
+
         if (ctx.bloque().size() > 1) {
-            contextStack.push(true); // Entering a new block (local context)
+            threeAddressCode.add("goto " + endIfLabel + ";");
+            threeAddressCode.add(elseLabel + ":");
+            contextStack.push(true); // Entering else block context
             visit(ctx.bloque(1));
-            contextStack.pop(); // Leaving the block
+            contextStack.pop(); // Leaving else block context
+        } else {
+            threeAddressCode.add(elseLabel + ":");
         }
+
+        threeAddressCode.add(endIfLabel + ":");
         return null;
     }
 
     @Override
     public Void visitBucleWhile(SimpleParser.BucleWhileContext ctx) {
-        visit(ctx.operacion());
-        contextStack.push(true); // Entering a new block (local context)
+        String startWhileLabel = generateLabel();
+        String endWhileLabel = generateLabel();
+
+        threeAddressCode.add(startWhileLabel + ":");
+        visit(ctx.operacion()); // Visit condition expression
+        threeAddressCode.add("if " + ctx.operacion().getText() + " == 0 goto " + endWhileLabel + ";");
+
+        contextStack.push(true); // Entering while block context
         visit(ctx.bloque());
-        contextStack.pop(); // Leaving the block
+        contextStack.pop(); // Leaving while block context
+
+        threeAddressCode.add("goto " + startWhileLabel + ";");
+        threeAddressCode.add(endWhileLabel + ":");
         return null;
     }
 
     @Override
     public Void visitBloque(SimpleParser.BloqueContext ctx) {
-        contextStack.push(true); // Entering a new block (local context)
+        contextStack.push(true); // Entering block context
         visitChildren(ctx);
-        contextStack.pop(); // Leaving the block
+        contextStack.pop(); // Leaving block context
         return null;
     }
 
     private String generateTempVar() {
         return "t" + (tempCount++);
+    }
+
+    private String generateLabel() {
+        return "L" + (labelCount++);
     }
 
     public SymbolTable getSymbolTable() {

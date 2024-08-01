@@ -1,5 +1,4 @@
 grammar Simple;
-
 @parser::header {
     import proyectoFinal.Interpretador.TablaSimbolos.Symbol;
     import proyectoFinal.Interpretador.TablaSimbolos.SymbolTable;
@@ -120,7 +119,7 @@ bucleWhile
     : WHILE PA operacion PC bloque
     ;
 
-declaracionFuncion : tipoDato ID PA parametros PC ;
+declaracionFuncion : VOID tipoDato ID PA parametros PC ;
 
 definicionFuncion : tipoDato ID PA parametros PC bloque ;
 

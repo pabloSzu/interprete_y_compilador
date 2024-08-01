@@ -1,4 +1,4 @@
-// Generated from c:/Users/pablo/Desktop/Nueva carpeta/Interpretador-version2/src/main/antlr4/proyectoFinal/Interpretador/Simple.g4 by ANTLR 4.13.1
+// Generated from c:/Users/pablo/Desktop/TC-Final/Interprete_y_compilador/Interpretador-version3/src/main/antlr4/proyectoFinal/Interpretador/Simple.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
